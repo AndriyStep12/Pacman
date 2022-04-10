@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            color: #fff;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+            background-color: #333;
+        }
+
+        .wrap {
+            display: none;
+        }
+
+        .box {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: ;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            transition: 0.3s;
+        }
+
+        .target {
+            width: 20px;
+            height: 20px;
+            margin-top: -10px;
+            margin-left: -10px;
+            background-color: red;
+            position: absolute;
+            border-radius: 50%;
+            border: 10px double #fff;
+            display: none;
+        }
+
+        #targ {
+            margin-top: 0px;
+            width: 20px;
+            height: 20px;
+            margin-top: -10px;
+            margin-left: -10px;
+            background-color: red;
+            position: absolute;
+            border-radius: 50%;
+            border: 10px double #fff;
+            /* display: none; */
+        }
+
+        .score {
+            display: flex;
+            justify-content: end;
+            align-items: flex-start;
+            background-color: none;
+            color: #fff;
+            font-size: 30px;
+            margin-right: 50px;
+            font-family: monospace;
+            margin-top: 30px;
+            margin-left: 30px;
+        }
+
+        .players {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+        }
+
+        .settings {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .setPlayer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .player {
+            color: #fff;
+        }
+
+        .inp {
+            color: #fff;
+            background: none;
+            border: 2px solid #fff;
+            margin: 20px;
+        }
+
+
+
+        #getSet {
+            background: none;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 20px;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        #box {
+            background-color: red;
+        }
+
+        #box2 {
+            background-color: yellow;
+        }
+
+        .inpColor {
+            margin-left: 10px;
+        }
+
+        #inpColor2 {
+            margin-left: 16px;
+        }
+
+        .wit {
+            margin-left: 15px;
+        }
+
+        .rand {
+            display: flex;
+            align-items: center;
+            height: 30px;
+        }
+
+        #namePlayer2,
+        #namePlayer1 {
+            margin: 0 15px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="wrap" id="wrap">
+        <div class="score" id="score">
+            Score <span id="namePlayer1"></span>: <span id="numbScore">0</span>
+        </div>
+        <br>
+        <div class="score" id="score">
+            Score <span id="namePlayer2"></span>: <span id="numbScore2">0</span>
+        </div>
+
+        <div class="box" id="box"></div>
+        <div class="box" id="box2"></div>
+        <div class="target" id="target">
+
+        </div>
+
+    </div>
+    <div class="players" id="playersBox">
+        <div class="settings">
+            <div class="setPlayer">
+                <div class="player">
+                    <input class="inp" type="text" id="inp1" value="Player#1"> (🠕 🠗 ➞ 🠔)
+                    <input class="inpColor" type="color" id="inpColor1">
+
+                </div>
+                <div class="player">
+                    <input class="inp" type="text" id="inp2" value="Player#2"> (w s d a )
+                    <input class="inpColor" type="color" id="inpColor2">
+                </div>
+                <div class="rand">
+                    <div id="targ"></div> <span class="wit">- МІШЕНЬ</span>
+                </div>
+            </div>
+            <div class="butGetSet">
+                <button id="getSet">Зберегти налаштування</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let click = 0;
+        getSet.onclick = function() {
+            namePlayer1.innerText = ' ' + inp1.value + ' ';
+            namePlayer2.innerText = ' ' + inp2.value + ' ';
+            box.style.backgroundColor = inpColor1.value;
+            box2.style.backgroundColor = inpColor2.value;
+            playersBox.style.display = 'none';
+            wrap.style.display = 'flex';
+            click = 1;
+        }
+
+        let topPos = 50;
+        let leftPos = 50;
+        let t;
+        let b;
+        let l;
+        let r;
+
+        let topPos2 = 50;
+        let leftPos2 = 50;
+        let t2;
+        let b2;
+        let l2;
+        let r2;
+        document.body.onkeydown = function(e) {
+            if (click == 1) {
+                if (e.keyCode == 38) {
+                    stopMove()
+                    t = setInterval(function() {
+                        topPos--;
+                        if (topPos < 0) {
+                            setTimeout(function() {
+                                box.style.display = 'none';
+                            }, 1)
+                            topPos = 100;
+                            box.style.top = topPos + '%';
+                            box.style.display = 'block';
+                        } else {
+                            box.style.display = 'block';
+                            checkWinner();
+                            box.style.top = topPos + '%';
+                        }
+                    }, speed)
+                } else if (e.keyCode == 40) {
+                    stopMove()
+                    b = setInterval(function() {
+                        topPos++;
+                        if (topPos > 100) {
+                            setTimeout(function() {
+                                box.style.display = 'none';
+                            }, 1)
+                            topPos = 0;
+                            box.style.top = topPos + '%';
+                            box.style.display = 'block';
+                        } else {
+                            box.style.display = 'block';
+                            checkWinner();
+                            box.style.top = topPos + '%';
+                        }
+                    }, speed)
+                } else if (e.keyCode == 39) {
+                    stopMove()
+                    r = setInterval(function() {
+                        leftPos++;
+                        box.style.display = 'block';
+                        checkWinner();
+                        box.style.left = leftPos + '%';
+                    }, speed)
+                } else if (e.keyCode == 37) {
+
+                    stopMove()
+                    l = setInterval(function() {
+                        leftPos--;
+
+                        box.style.display = 'block';
+                        checkWinner();
+                        box.style.left = leftPos + '%';
+                    }, speed)
+                } else if (e.keyCode == 83) {
+                    stopMove2()
+                    b2 = setInterval(function() {
+                        topPos2++;
+                        if (topPos2 > 100) {
+                            setTimeout(function() {
+                                box2.style.display = 'none';
+                            }, 1)
+                            topPos2 = 0;
+                            box2.style.top = topPos2 + '%';
+                            box2.style.display = 'block';
+                        } else {
+                            box2.style.display = 'block';
+                            checkWinner2()
+                            box2.style.top = topPos2 + '%';
+                        }
+                    }, speed2)
+                } else if (e.keyCode == 68) {
+                    stopMove2()
+                    r2 = setInterval(function() {
+                        leftPos2++;
+                        if (leftPos2 == 100) {
+                            setTimeout(function() {
+                                box2.style.display = 'none';
+                            }, 1)
+                            leftPos2 = 0;
+                            box2.style.top = leftPos2 + '%';
+                            box2.style.display = 'block';
+                        } else {
+                            box2.style.display = 'block';
+                            checkWinner2()
+                            box2.style.left = leftPos2 + '%';
+                            box2.style.top = topPos2 + '%';
+                        }
+
+                    }, speed2)
+                } else if (e.keyCode == 65) {
+
+                    stopMove2()
+                    l2 = setInterval(function() {
+                        leftPos2--;
+                        if (leftPos2 == 0) {
+                            setTimeout(function() {
+                                box2.style.display = 'none';
+                            }, 1)
+                            leftPos2 = 100;
+                            box2.style.top = leftPos2 + '%';
+                            box2.style.display = 'block';
+                        } else {
+                            box2.style.display = 'block';
+                            checkWinner2()
+                            box2.style.left = leftPos2 + '%';
+                            box2.style.top = topPos2 + '%';
+                        }
+                    }, speed2)
+                } else if (e.keyCode == 87) {
+                    stopMove2()
+                    t2 = setInterval(function() {
+                        topPos2--;
+                        if (topPos2 < 0) {
+                            setTimeout(function() {
+                                box2.style.display = 'none';
+                            }, 1)
+                            topPos2 = 100;
+                            box2.style.top = topPos2 + '%';
+                            box2.style.display = 'block';
+                        } else {
+                            box2.style.display = 'block';
+                            checkWinner2();
+                            box2.style.top = topPos2 + '%';
+                        }
+                    }, speed2)
+                }
+
+
+            }
+
+        }
+
+        function stopMove() {
+            clearInterval(t)
+            clearInterval(b)
+            clearInterval(r)
+            clearInterval(l)
+        }
+
+        function stopMove2() {
+            clearInterval(t2)
+            clearInterval(b2)
+            clearInterval(r2)
+            clearInterval(l2)
+        }
+
+
+
+        let score = 0;
+        let score2 = 0;
+
+        let randomLeft;
+        let randomTop;
+
+        function setRandomTarget() {
+            target.style.display = 'flex';
+            randomLeft = Math.floor(Math.random() * 100);
+            randomTop = Math.floor(Math.random() * 100);
+            target.style.left = randomLeft + '%';
+            target.style.top = randomTop + 'vh';
+
+
+        }
+        let speed = 100;
+        let speed2 = 100;
+
+        function checkWinner() {
+            if (topPos == randomTop && leftPos == randomLeft) {
+                setRandomTarget();
+                score++;
+                speed--;
+                numbScore.innerText = score;
+            }
+        }
+
+        function checkWinner2() {
+            if (topPos2 == randomTop && leftPos2 == randomLeft) {
+                setRandomTarget();
+                score2++;
+                speed2--;
+                numbScore2.innerText = score2;
+            }
+        }
+        setRandomTarget()
+
+    </script>
+</body>
+
+</html>
