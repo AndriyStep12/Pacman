@@ -7,15 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pacman</title>
     <link rel="icon" href="https://pngimg.com/uploads/pacman/pacman_PNG21.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Kdam Thmor Pro', sans-serif;
+            color: rgba(0, 255, 68, 100);
         }
 
         body {
-            color: #fff;
+            color: rgba(0, 255, 68, 100);
             overflow: hidden;
             width: 100%;
             height: 100vh;
@@ -24,6 +29,7 @@
 
         .wrap {
             display: none;
+            flex-direction: column
         }
 
         .box {
@@ -69,7 +75,7 @@
             justify-content: end;
             align-items: flex-start;
             background-color: none;
-            color: #fff;
+            color: rgba(0, 255, 68, 100);
             font-size: 30px;
             margin-right: 50px;
             font-family: monospace;
@@ -80,9 +86,9 @@
         .players {
             display: flex;
             width: 100%;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
+/*            height: 100vh;*/
+            /*            justify-content: center;*/
+            /*            align-items: center;*/
             flex-direction: row;
         }
 
@@ -91,6 +97,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 50%;
+            height: 100vh;
         }
 
         .setPlayer {
@@ -101,22 +109,34 @@
         }
 
         .player {
-            color: #fff;
+            color: rgba(0, 255, 68, 100);
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px;
         }
 
         .inp {
-            color: #fff;
-            background: none;
-            border: 2px solid #fff;
+            color: rgba(0, 255, 68, 100);
+            background: #000;
+            border: 2px solid rgba(0, 255, 68, 100);
+            ;
             margin: 20px;
+            width: 400px;
+            height: 60px;
+            border-radius: 20px;
+            padding: 0 20px;
+            font-size: 30px;
         }
 
 
 
         #getSet {
             background: none;
-            color: #fff;
-            border: 2px solid #fff;
+            color: rgba(0, 255, 68, 100);
+            border: 2px solid rgba(0, 255, 68, 100);
+            ;
             padding: 20px;
             margin-top: 30px;
             cursor: pointer;
@@ -132,6 +152,21 @@
 
         .inpColor {
             margin-left: 10px;
+            border: none;
+            border-radius: 10px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 100px;
+            height: 100px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .inpColor::-webkit-color-swatch {
+            border-radius: 15px;
+            border: none;
         }
 
         #inpColor2 {
@@ -153,23 +188,180 @@
             margin: 0 15px;
         }
 
+        .how_play {
+            width: 50%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .how_play h2 {
+            font-size: 30px;
+        }
+
+        li {
+            font-size: 25px;
+        }
+
+        .but {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .let {
+            display: flex;
+            width: 100%;
+            height: 70vh;
+        }
+
+        .contr {
+            height: 30vh;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .box_fir,
+        .box_sec {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            padding: 0 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .box_fir {
+            justify-content: flex-start;
+
+        }
+
+        .box_sec {
+            justify-content: flex-end;
+        }
+
+        @media screen and (max-width: 1286px){
+            .players{
+                flex-direction: column-reverse;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .settings{
+                width: 100%;
+                height: 50vh;
+            }
+            
+            .setPlayer{
+                width: 100%;
+                height: 50vh;
+            }
+            
+            .how_play{
+                width: 100%;
+                height: 50vh;
+            }
+        }
+        
+        @media screen and (max-width: 746px){
+            .inp{
+                width: 60%;
+            }
+            
+            .settings,
+            .setPlayer,
+            .player{
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+        }
+        
+        
     </style>
 </head>
 
 <body>
 
     <div class="wrap" id="wrap">
-        <div class="score" id="score">
-            Score <span id="namePlayer1"></span>: <span id="numbScore">0</span>
+        <div class="let">
+            <div class="score" id="score">
+                Score <span id="namePlayer1"></span>: <span id="numbScore">0</span>
+            </div>
+            <br>
+            <div class="score" id="score">
+                Score <span id="namePlayer2"></span>: <span id="numbScore2">0</span>
+            </div>
         </div>
-        <br>
-        <div class="score" id="score">
-            Score <span id="namePlayer2"></span>: <span id="numbScore2">0</span>
-        </div>
+
 
         <div class="box" id="box"></div>
         <div class="box" id="box2"></div>
         <div class="target" id="target">
+
+        </div>
+
+        <div class="contr">
+            <div class="box_fir">
+                <div class="controler">
+                    <div class="row">
+                        <div class="but" id="up">
+                            🡹
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="but" id="left">
+                            🢀
+                        </div>
+                        <div class="but"></div>
+                        <div class="but" id="right">
+                            🢂
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="but" id="down">
+                            🡻
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box_sec">
+                <div class="controler">
+                    <div class="row">
+                        <div class="but" id="upT">
+                            🡹
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="but" id="leftT">
+                            🢀
+                        </div>
+                        <div class="but"></div>
+                        <div class="but" id="rightT">
+                            🢂
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="but" id="downT">
+                            🡻
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
 
@@ -178,21 +370,32 @@
         <div class="settings">
             <div class="setPlayer">
                 <div class="player">
-                    <input class="inp" type="text" id="inp1" value="Player#1"> (🠕 🠗 ➞ 🠔)
-                    <input class="inpColor" type="color" id="inpColor1">
+                    <input class="inp" type="text" id="inp1" value="Player#1"> (🠕🠗➞🠔)
+                    <input class="inpColor" type="color" id="inpColor1" value="#43da86">
 
                 </div>
                 <div class="player">
-                    <input class="inp" type="text" id="inp2" value="Player#2"> (w s d a )
-                    <input class="inpColor" type="color" id="inpColor2">
+                    <input class="inp" type="text" id="inp2" value="Player#2"> (w sda )
+                    <input class="inpColor" value="#ffb721" type="color" id="inpColor2">
                 </div>
                 <div class="rand">
-                    <div id="targ"></div> <span class="wit">- МІШЕНЬ</span>
+                    <div id="targ"></div> <span class="wit">- TARGET</span>
                 </div>
             </div>
             <div class="butGetSet">
                 <button id="getSet">Зберегти налаштування</button>
             </div>
+        </div>
+        <div class="how_play">
+            <h2>How to play this game</h2>
+            <ol>
+                <li>Watch your Pakman</li>
+                <li>Manage your Pakman</li>
+                <li>Get your Pakman on target</li>
+                <li>Gain points</li>
+                <li>Let the stronger one win</li>
+                <li>AND GLORY TO UKRAINE AND GLORY TO HEROES</li>
+            </ol>
         </div>
     </div>
 
@@ -221,6 +424,167 @@
         let b2;
         let l2;
         let r2;
+
+        up.onclick = function() {
+            if (click == 1) {
+                stopMove()
+                t = setInterval(function() {
+                    topPos--;
+                    if (topPos < 0) {
+                        setTimeout(function() {
+                            box.style.display = 'none';
+                        }, 1)
+                        topPos = 100;
+                        box.style.top = topPos + '%';
+                        box.style.display = 'block';
+                    } else {
+                        box.style.display = 'block';
+                        checkWinner();
+                        box.style.top = topPos + '%';
+                    }
+                }, speed)
+            }
+        }
+
+        left.onclick = function() {
+            if (click == 1) {
+                stopMove()
+                l = setInterval(function() {
+                    leftPos--;
+
+                    box.style.display = 'block';
+                    checkWinner();
+                    box.style.left = leftPos + '%';
+                }, speed)
+            }
+        }
+
+        right.onclick = function() {
+            if (click == 1) {
+                stopMove()
+                l = setInterval(function() {
+                    leftPos++;
+
+                    box.style.display = 'block';
+                    checkWinner();
+                    box.style.left = leftPos + '%';
+                }, speed)
+            }
+        }
+
+        down.onclick = function() {
+            if (click == 1) {
+                stopMove()
+                t = setInterval(function() {
+                    topPos++;
+                    if (topPos < 0) {
+                        setTimeout(function() {
+                            box.style.display = 'none';
+                        }, 1)
+                        topPos = 100;
+                        box.style.top = topPos + '%';
+                        box.style.display = 'block';
+                    } else {
+                        box.style.display = 'block';
+                        checkWinner();
+                        box.style.top = topPos + '%';
+                    }
+                }, speed)
+            }
+        }
+
+        upT.onclick = function() {
+            if (click == 1) {
+                stopMove2()
+                t2 = setInterval(function() {
+                    topPos2--;
+                    if (topPos2 < 0) {
+                        setTimeout(function() {
+                            box2.style.display = 'none';
+                        }, 1)
+                        topPos2 = 100;
+                        box2.style.top = topPos2 + '%';
+                        box2.style.display = 'block';
+                    } else {
+                        box2.style.display = 'block';
+                        checkWinner2();
+                        box2.style.top = topPos2 + '%';
+                    }
+                }, speed2)
+            }
+        }
+
+        leftT.onclick = function() {
+            if (click == 1) {
+                stopMove2()
+                l2 = setInterval(function() {
+                    leftPos2--;
+                    if (leftPos2 == 0) {
+                        setTimeout(function() {
+                            box2.style.display = 'none';
+                        }, 1)
+                        leftPos2 = 100;
+                        box2.style.top = leftPos2 + '%';
+                        box2.style.display = 'block';
+                    } else {
+                        box2.style.display = 'block';
+                        checkWinner2()
+                        box2.style.left = leftPos2 + '%';
+                        box2.style.top = topPos2 + '%';
+                    }
+                }, speed2)
+            }
+        }
+
+        rightT.onclick = function() {
+            if (click == 1) {
+                stopMove2()
+                r2 = setInterval(function() {
+                    leftPos2++;
+                    if (leftPos2 == 100) {
+                        setTimeout(function() {
+                            box2.style.display = 'none';
+                        }, 1)
+                        leftPos2 = 0;
+                        box2.style.top = leftPos2 + '%';
+                        box2.style.display = 'block';
+                    } else {
+                        box2.style.display = 'block';
+                        checkWinner2()
+                        box2.style.left = leftPos2 + '%';
+                        box2.style.top = topPos2 + '%';
+                    }
+
+                }, speed2)
+            }
+        }
+
+        downT.onclick = function() {
+            if (click == 1) {
+                stopMove2()
+                b2 = setInterval(function() {
+                    topPos2++;
+                    if (topPos2 > 100) {
+                        setTimeout(function() {
+                            box2.style.display = 'none';
+                        }, 1)
+                        topPos2 = 0;
+                        box2.style.top = topPos2 + '%';
+                        box2.style.display = 'block';
+                    } else {
+                        box2.style.display = 'block';
+                        checkWinner2()
+                        box2.style.top = topPos2 + '%';
+                    }
+                }, speed2)
+            }
+        }
+
+        //        left
+        //        right
+        //        down
+
+
         document.body.onkeydown = function(e) {
             if (click == 1) {
                 if (e.keyCode == 38) {
@@ -415,6 +779,7 @@
             GitHub: 'AndriyStep12',
             twitter: '@StepAndriy'
         }
+
     </script>
 </body>
 
