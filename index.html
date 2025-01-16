@@ -401,375 +401,169 @@
 
     <script>
         let click = 0;
-        getSet.onclick = function() {
-            namePlayer1.innerText = ' ' + inp1.value + ' ';
-            namePlayer2.innerText = ' ' + inp2.value + ' ';
-            box.style.backgroundColor = inpColor1.value;
-            box2.style.backgroundColor = inpColor2.value;
-            playersBox.style.display = 'none';
-            wrap.style.display = 'flex';
-            click = 1;
+getSet.onclick = function () {
+    namePlayer1.innerText = ' ' + inp1.value + ' ';
+    namePlayer2.innerText = ' ' + inp2.value + ' ';
+    box.style.backgroundColor = inpColor1.value;
+    box2.style.backgroundColor = inpColor2.value;
+    playersBox.style.display = 'none';
+    wrap.style.display = 'flex';
+    click = 1;
+};
+
+let topPos = 50;
+let leftPos = 50;
+let topPos2 = 50;
+let leftPos2 = 50;
+
+let t, b, l, r;
+let t2, b2, l2, r2;
+
+let speed = 100;
+let speed2 = 100;
+
+document.body.onkeydown = function (e) {
+    if (click == 1) {
+        if (e.keyCode == 38) {
+            moveUp(box, 'box');
+        } else if (e.keyCode == 40) {
+            moveDown(box, 'box');
+        } else if (e.keyCode == 39) {
+            moveRight(box, 'box');
+        } else if (e.keyCode == 37) {
+            moveLeft(box, 'box');
+        } else if (e.keyCode == 87) {
+            moveUp(box2, 'box2');
+        } else if (e.keyCode == 83) {
+            moveDown(box2, 'box2');
+        } else if (e.keyCode == 68) {
+            moveRight(box2, 'box2');
+        } else if (e.keyCode == 65) {
+            moveLeft(box2, 'box2');
         }
+    }
+};
 
-        let topPos = 50;
-        let leftPos = 50;
-        let t;
-        let b;
-        let l;
-        let r;
+function moveUp(element, type) {
+    clearIntervals(type);
+    let position = type === 'box' ? topPos : topPos2;
+    let interval = setInterval(() => {
+        position--;
+        if (position < 0) position = 100;
+        updatePosition(element, type, 'top', position);
+    }, getSpeed(type));
+    assignInterval(type, 't', interval);
+}
 
-        let topPos2 = 50;
-        let leftPos2 = 50;
-        let t2;
-        let b2;
-        let l2;
-        let r2;
+function moveDown(element, type) {
+    clearIntervals(type);
+    let position = type === 'box' ? topPos : topPos2;
+    let interval = setInterval(() => {
+        position++;
+        if (position > 100) position = 0;
+        updatePosition(element, type, 'top', position);
+    }, getSpeed(type));
+    assignInterval(type, 'b', interval);
+}
 
-        up.onclick = function() {
-            if (click == 1) {
-                stopMove()
-                t = setInterval(function() {
-                    topPos--;
-                    if (topPos < 0) {
-                        setTimeout(function() {
-                            box.style.display = 'none';
-                        }, 1)
-                        topPos = 100;
-                        box.style.top = topPos + '%';
-                        box.style.display = 'block';
-                    } else {
-                        box.style.display = 'block';
-                        checkWinner();
-                        box.style.top = topPos + '%';
-                    }
-                }, speed)
-            }
-        }
+function moveLeft(element, type) {
+    clearIntervals(type);
+    let position = type === 'box' ? leftPos : leftPos2;
+    let interval = setInterval(() => {
+        position--;
+        if (position < 0) position = 100;
+        updatePosition(element, type, 'left', position);
+    }, getSpeed(type));
+    assignInterval(type, 'l', interval);
+}
 
-        left.onclick = function() {
-            if (click == 1) {
-                stopMove()
-                l = setInterval(function() {
-                    leftPos--;
+function moveRight(element, type) {
+    clearIntervals(type);
+    let position = type === 'box' ? leftPos : leftPos2;
+    let interval = setInterval(() => {
+        position++;
+        if (position > 100) position = 0;
+        updatePosition(element, type, 'left', position);
+    }, getSpeed(type));
+    assignInterval(type, 'r', interval);
+}
 
-                    box.style.display = 'block';
-                    checkWinner();
-                    box.style.left = leftPos + '%';
-                }, speed)
-            }
-        }
+function updatePosition(element, type, axis, value) {
+    element.style[axis] = value + '%';
+    if (type === 'box') {
+        if (axis === 'top') topPos = value;
+        else leftPos = value;
+        checkWinner();
+    } else {
+        if (axis === 'top') topPos2 = value;
+        else leftPos2 = value;
+        checkWinner2();
+    }
+}
 
-        right.onclick = function() {
-            if (click == 1) {
-                stopMove()
-                l = setInterval(function() {
-                    leftPos++;
+function clearIntervals(type) {
+    if (type === 'box') {
+        clearInterval(t);
+        clearInterval(b);
+        clearInterval(l);
+        clearInterval(r);
+    } else {
+        clearInterval(t2);
+        clearInterval(b2);
+        clearInterval(l2);
+        clearInterval(r2);
+    }
+}
 
-                    box.style.display = 'block';
-                    checkWinner();
-                    box.style.left = leftPos + '%';
-                }, speed)
-            }
-        }
+function assignInterval(type, direction, interval) {
+    if (type === 'box') {
+        if (direction === 't') t = interval;
+        else if (direction === 'b') b = interval;
+        else if (direction === 'l') l = interval;
+        else if (direction === 'r') r = interval;
+    } else {
+        if (direction === 't') t2 = interval;
+        else if (direction === 'b') b2 = interval;
+        else if (direction === 'l') l2 = interval;
+        else if (direction === 'r') r2 = interval;
+    }
+}
 
-        down.onclick = function() {
-            if (click == 1) {
-                stopMove()
-                t = setInterval(function() {
-                    topPos++;
-                    if (topPos < 0) {
-                        setTimeout(function() {
-                            box.style.display = 'none';
-                        }, 1)
-                        topPos = 100;
-                        box.style.top = topPos + '%';
-                        box.style.display = 'block';
-                    } else {
-                        box.style.display = 'block';
-                        checkWinner();
-                        box.style.top = topPos + '%';
-                    }
-                }, speed)
-            }
-        }
+function getSpeed(type) {
+    return type === 'box' ? speed : speed2;
+}
 
-        upT.onclick = function() {
-            if (click == 1) {
-                stopMove2()
-                t2 = setInterval(function() {
-                    topPos2--;
-                    if (topPos2 < 0) {
-                        setTimeout(function() {
-                            box2.style.display = 'none';
-                        }, 1)
-                        topPos2 = 100;
-                        box2.style.top = topPos2 + '%';
-                        box2.style.display = 'block';
-                    } else {
-                        box2.style.display = 'block';
-                        checkWinner2();
-                        box2.style.top = topPos2 + '%';
-                    }
-                }, speed2)
-            }
-        }
+let score = 0;
+let score2 = 0;
 
-        leftT.onclick = function() {
-            if (click == 1) {
-                stopMove2()
-                l2 = setInterval(function() {
-                    leftPos2--;
-                    if (leftPos2 == 0) {
-                        setTimeout(function() {
-                            box2.style.display = 'none';
-                        }, 1)
-                        leftPos2 = 100;
-                        box2.style.top = leftPos2 + '%';
-                        box2.style.display = 'block';
-                    } else {
-                        box2.style.display = 'block';
-                        checkWinner2()
-                        box2.style.left = leftPos2 + '%';
-                        box2.style.top = topPos2 + '%';
-                    }
-                }, speed2)
-            }
-        }
+function setRandomTarget() {
+    target.style.display = 'flex';
+    const randomLeft = Math.floor(Math.random() * 100);
+    const randomTop = Math.floor(Math.random() * 100);
+    target.style.left = randomLeft + '%';
+    target.style.top = randomTop + '%';
+}
 
-        rightT.onclick = function() {
-            if (click == 1) {
-                stopMove2()
-                r2 = setInterval(function() {
-                    leftPos2++;
-                    if (leftPos2 == 100) {
-                        setTimeout(function() {
-                            box2.style.display = 'none';
-                        }, 1)
-                        leftPos2 = 0;
-                        box2.style.top = leftPos2 + '%';
-                        box2.style.display = 'block';
-                    } else {
-                        box2.style.display = 'block';
-                        checkWinner2()
-                        box2.style.left = leftPos2 + '%';
-                        box2.style.top = topPos2 + '%';
-                    }
+function checkWinner() {
+    if (topPos == parseInt(target.style.top) && leftPos == parseInt(target.style.left)) {
+        setRandomTarget();
+        score++;
+        speed--;
+        numbScore.innerText = score;
+    }
+}
 
-                }, speed2)
-            }
-        }
+function checkWinner2() {
+    if (topPos2 == parseInt(target.style.top) && leftPos2 == parseInt(target.style.left)) {
+        setRandomTarget();
+        score2++;
+        speed2--;
+        numbScore2.innerText = score2;
+    }
+}
 
-        downT.onclick = function() {
-            if (click == 1) {
-                stopMove2()
-                b2 = setInterval(function() {
-                    topPos2++;
-                    if (topPos2 > 100) {
-                        setTimeout(function() {
-                            box2.style.display = 'none';
-                        }, 1)
-                        topPos2 = 0;
-                        box2.style.top = topPos2 + '%';
-                        box2.style.display = 'block';
-                    } else {
-                        box2.style.display = 'block';
-                        checkWinner2()
-                        box2.style.top = topPos2 + '%';
-                    }
-                }, speed2)
-            }
-        }
+setRandomTarget();
 
-        //        left
-        //        right
-        //        down
-
-
-        document.body.onkeydown = function(e) {
-            if (click == 1) {
-                if (e.keyCode == 38) {
-                    stopMove()
-                    t = setInterval(function() {
-                        topPos--;
-                        if (topPos < 0) {
-                            setTimeout(function() {
-                                box.style.display = 'none';
-                            }, 1)
-                            topPos = 100;
-                            box.style.top = topPos + '%';
-                            box.style.display = 'block';
-                        } else {
-                            box.style.display = 'block';
-                            checkWinner();
-                            box.style.top = topPos + '%';
-                        }
-                    }, speed)
-                } else if (e.keyCode == 40) {
-                    stopMove()
-                    b = setInterval(function() {
-                        topPos++;
-                        if (topPos > 100) {
-                            setTimeout(function() {
-                                box.style.display = 'none';
-                            }, 1)
-                            topPos = 0;
-                            box.style.top = topPos + '%';
-                            box.style.display = 'block';
-                        } else {
-                            box.style.display = 'block';
-                            checkWinner();
-                            box.style.top = topPos + '%';
-                        }
-                    }, speed)
-                } else if (e.keyCode == 39) {
-                    stopMove()
-                    r = setInterval(function() {
-                        leftPos++;
-                        box.style.display = 'block';
-                        checkWinner();
-                        box.style.left = leftPos + '%';
-                    }, speed)
-                } else if (e.keyCode == 37) {
-
-                    stopMove()
-                    l = setInterval(function() {
-                        leftPos--;
-
-                        box.style.display = 'block';
-                        checkWinner();
-                        box.style.left = leftPos + '%';
-                    }, speed)
-                } else if (e.keyCode == 83) {
-                    stopMove2()
-                    b2 = setInterval(function() {
-                        topPos2++;
-                        if (topPos2 > 100) {
-                            setTimeout(function() {
-                                box2.style.display = 'none';
-                            }, 1)
-                            topPos2 = 0;
-                            box2.style.top = topPos2 + '%';
-                            box2.style.display = 'block';
-                        } else {
-                            box2.style.display = 'block';
-                            checkWinner2()
-                            box2.style.top = topPos2 + '%';
-                        }
-                    }, speed2)
-                } else if (e.keyCode == 68) {
-                    stopMove2()
-                    r2 = setInterval(function() {
-                        leftPos2++;
-                        if (leftPos2 == 100) {
-                            setTimeout(function() {
-                                box2.style.display = 'none';
-                            }, 1)
-                            leftPos2 = 0;
-                            box2.style.top = leftPos2 + '%';
-                            box2.style.display = 'block';
-                        } else {
-                            box2.style.display = 'block';
-                            checkWinner2()
-                            box2.style.left = leftPos2 + '%';
-                            box2.style.top = topPos2 + '%';
-                        }
-
-                    }, speed2)
-                } else if (e.keyCode == 65) {
-
-                    stopMove2()
-                    l2 = setInterval(function() {
-                        leftPos2--;
-                        if (leftPos2 == 0) {
-                            setTimeout(function() {
-                                box2.style.display = 'none';
-                            }, 1)
-                            leftPos2 = 100;
-                            box2.style.top = leftPos2 + '%';
-                            box2.style.display = 'block';
-                        } else {
-                            box2.style.display = 'block';
-                            checkWinner2()
-                            box2.style.left = leftPos2 + '%';
-                            box2.style.top = topPos2 + '%';
-                        }
-                    }, speed2)
-                } else if (e.keyCode == 87) {
-                    stopMove2()
-                    t2 = setInterval(function() {
-                        topPos2--;
-                        if (topPos2 < 0) {
-                            setTimeout(function() {
-                                box2.style.display = 'none';
-                            }, 1)
-                            topPos2 = 100;
-                            box2.style.top = topPos2 + '%';
-                            box2.style.display = 'block';
-                        } else {
-                            box2.style.display = 'block';
-                            checkWinner2();
-                            box2.style.top = topPos2 + '%';
-                        }
-                    }, speed2)
-                }
-
-
-            }
-
-        }
-
-        function stopMove() {
-            clearInterval(t)
-            clearInterval(b)
-            clearInterval(r)
-            clearInterval(l)
-        }
-
-        function stopMove2() {
-            clearInterval(t2)
-            clearInterval(b2)
-            clearInterval(r2)
-            clearInterval(l2)
-        }
-
-
-
-        let score = 0;
-        let score2 = 0;
-
-        let randomLeft;
-        let randomTop;
-
-        function setRandomTarget() {
-            target.style.display = 'flex';
-            randomLeft = Math.floor(Math.random() * 100);
-            randomTop = Math.floor(Math.random() * 100);
-            target.style.left = randomLeft + '%';
-            target.style.top = randomTop + 'vh';
-
-
-        }
-        let speed = 100;
-        let speed2 = 100;
-
-        function checkWinner() {
-            if (topPos == randomTop && leftPos == randomLeft) {
-                setRandomTarget();
-                score++;
-                speed--;
-                numbScore.innerText = score;
-            }
-        }
-
-        function checkWinner2() {
-            if (topPos2 == randomTop && leftPos2 == randomLeft) {
-                setRandomTarget();
-                score2++;
-                speed2--;
-                numbScore2.innerText = score2;
-            }
-        }
-        setRandomTarget()
 
         let developer = {
             name: 'Andriy',
