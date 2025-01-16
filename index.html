@@ -449,7 +449,11 @@ function moveUp(element, type) {
     let position = type === 'box' ? topPos : topPos2;
     let interval = setInterval(() => {
         position--;
-        if (position < 0) position = 100;
+        if (position < -10) {
+            position = 110;
+            element.style.visibility = 'hidden';
+        }
+        if (position === 50) element.style.visibility = 'visible';
         updatePosition(element, type, 'top', position);
     }, getSpeed(type));
     assignInterval(type, 't', interval);
@@ -460,7 +464,11 @@ function moveDown(element, type) {
     let position = type === 'box' ? topPos : topPos2;
     let interval = setInterval(() => {
         position++;
-        if (position > 100) position = 0;
+        if (position > 110) {
+            position = -10;
+            element.style.visibility = 'hidden';
+        }
+        if (position === 50) element.style.visibility = 'visible';
         updatePosition(element, type, 'top', position);
     }, getSpeed(type));
     assignInterval(type, 'b', interval);
@@ -471,7 +479,11 @@ function moveLeft(element, type) {
     let position = type === 'box' ? leftPos : leftPos2;
     let interval = setInterval(() => {
         position--;
-        if (position < 0) position = 100;
+        if (position < -10) {
+            position = 110;
+            element.style.visibility = 'hidden';
+        }
+        if (position === 50) element.style.visibility = 'visible';
         updatePosition(element, type, 'left', position);
     }, getSpeed(type));
     assignInterval(type, 'l', interval);
@@ -482,7 +494,11 @@ function moveRight(element, type) {
     let position = type === 'box' ? leftPos : leftPos2;
     let interval = setInterval(() => {
         position++;
-        if (position > 100) position = 0;
+        if (position > 110) {
+            position = -10;
+            element.style.visibility = 'hidden';
+        }
+        if (position === 50) element.style.visibility = 'visible';
         updatePosition(element, type, 'left', position);
     }, getSpeed(type));
     assignInterval(type, 'r', interval);
@@ -563,6 +579,7 @@ function checkWinner2() {
 }
 
 setRandomTarget();
+
 
 
         let developer = {
